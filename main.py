@@ -78,7 +78,7 @@ def main(path, count, exclude, html):
     
     #  make html file
     if html:
-      make_html(path='index.html', common=common, total=total)
+        make_html(path='index.html', common=common, total=total)
 
 
 if __name__ == '__main__':
