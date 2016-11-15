@@ -1,11 +1,11 @@
 Usage:
 
-    python main.py --path=thesis_words.txt --count=5 --exclude=True --html=False
+    python main.py --path=/path/to/document.txt --count=5 --exclude=True --html=True
 
 Options:
 
-   --path (str) : file path
+    --path (str) : file path
 
-   --count (int): number of results to display
+    --count (int): number of results to display
 
-   --html (bool): whether to generate an html word cloud
+    --html (bool): whether to generate an html word cloud
