@@ -1,12 +1,13 @@
 import re
-import nltk
+from nltk import word_tokenize
+from nltk.corpus import stopwords
 from collections import Counter
 import click
 import random
 
 
 def make_html(path, common, total):
-
+    """Generates html word cloud."""
     colors = ['red', 'green', 'blue', 'cyan', 'orange', 'pink', 'teal', 'black', 'maroon']
     elements = []
     for k, v in common.items():
@@ -18,29 +19,29 @@ def make_html(path, common, total):
     #  write to file
     html_str = """
     <!doctype html>
-      <html class="no-js" lang="">
-        <head>
-          <meta charset="utf-8">
-          <meta http-equiv="x-ua-compatible" content="ie=edge">
-          <title></title>
-          <meta name="description" content="">
-          <meta name="viewport" content="width=device-width, initial-scale=1">
+    <html class="no-js" lang="">
+      <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-          <link rel="apple-touch-icon" href="apple-touch-icon.png">
-          <!-- Place favicon.ico in the root directory -->
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <!-- Place favicon.ico in the root directory -->
 
-        </head>
-        <body style="text-align: center">
-          <h1>Anna's Word Cloud</h1>
-          <div style="margin: 20px; color: red; width: auto; border: 1px solid #888; padding: 20px;">
+      </head>
+      <body style="text-align: center">
+        <h1>Your Word Cloud</h1>
+        <div style="margin: 20px; color: red; width: auto; border: 1px solid #888; padding: 20px;">
     """
+    #  concatenate words
     html_str += "".join(elements)
     html_str += """
-          </div>
-        </body>
-      </html>
+        </div>
+      </body>
+    </html>
     """
-
 
     html_file = open(path, 'w')
     html_file.write(html_str)
@@ -57,12 +58,13 @@ def main(path, count, exclude, html):
     exclusions = set()
     f = open(path, 'rb')
     text = f.read()
-    text2 = unicode(text, errors='replace')
-    tokens = nltk.word_tokenize(text2)
+    text = unicode(text, errors='replace')
+    tokens = word_tokenize(text)
     if exclude:
-        exclusions = set(
-            ['a', 'and', 'or', 'this', 'is', 'the', 'be', 'of', 'to', 'that', 'as', 'are', 'in', 
-            'on', 'for', 'not', 'by', 'which', 'has', 'their', 'et', 'al', 'it', 'al.'])
+        #  exclude nltk common stopwords
+        exclusions = stopwords.words()
+        #  add custom stopwords
+        exclusions.append('al.')
     nonPunct = re.compile('.*[A-Za-z0-9].*')
     filtered = [w for w in tokens if nonPunct.match(w) and w.lower() not in exclusions]
     counts = Counter(filtered)
