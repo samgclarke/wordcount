@@ -71,7 +71,7 @@ def main(path, count, exclude, html):
     common = dict(Counter(counts).most_common(count))
     
     total = 0
-    print "Anna's {} most common words: \n".format(count)
+    print "Your {} most common words: \n".format(count)
     i = 1
     for k, v in common.items():
         print "{}: {} ({})".format(i, k.encode('utf-8'), v)
